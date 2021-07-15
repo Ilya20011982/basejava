@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class ArrayStorage {
     public Resume[] storage = new Resume[3];
     private int size = 0;
-    Integer currentIndex;
+    private int currentIndex;
     private final String error1 = " - ERROR: resume was not found in the database!";
 
     public void clear() {
@@ -19,36 +19,24 @@ public class ArrayStorage {
         size = 0;
     }
 
-    private Integer findResumeInDatabase(String uuid) {
-        int i = 0;
-        while (i < size && !storage[i].getUuid().equals(uuid)) i++;
-        if (i >= size) {
-            return null;
-        }
-        currentIndex = i;
-        return currentIndex;
-    }
-
-    private boolean isResumeNotFound(Integer currentIndex) {
-        return currentIndex == null;
-    }
-
     public void update(Resume r) {
-        if (isResumeNotFound(findResumeInDatabase(r.getUuid()))) {
-            System.out.println("Update resume impossible " + r.getUuid() + error1);
+        String uuid = r.getUuid();
+        if (isResumeNotFound(findResumeInDatabase(uuid))) {
+            System.out.println("Update resume impossible " + uuid + error1);
         } else {
             storage[currentIndex] = r;
-            System.out.println("Resume " + r.getUuid() + " is update!");
+            System.out.println("Resume " + uuid + " is update!");
         }
     }
 
     public void save(Resume r) {
+        String uuid = r.getUuid();
         if (size >= storage.length) {
-            System.out.println("Save resume impossible " + r.getUuid() + " - ERROR: the database is full!");
+            System.out.println("Save resume impossible " + uuid + " - ERROR: the database is full!");
             return;
         }
-        if (!isResumeNotFound(findResumeInDatabase(r.getUuid()))) {
-            System.out.println("Save resume impossible " + r.getUuid() + " - ERROR: resume is already in the database!");
+        if (!isResumeNotFound(findResumeInDatabase(uuid))) {
+            System.out.println("Save resume impossible " + uuid + " - ERROR: resume is already in the database!");
         } else {
             storage[size] = r;
             size++;
@@ -82,5 +70,19 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private int findResumeInDatabase(String uuid) {
+        int i = 0;
+        while (i < size && !storage[i].getUuid().equals(uuid)) i++;
+        if (i >= size) {
+            i = -1;
+        }
+        currentIndex = i;
+        return currentIndex;
+    }
+
+    private boolean isResumeNotFound(int currentIndex) {
+        return currentIndex < 0;
     }
 }
