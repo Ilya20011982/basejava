@@ -9,9 +9,9 @@ import java.util.Arrays;
  */
 
 public class ArrayStorage {
-    public Resume[] storage = new Resume[10000];
+    public Resume[] storage = new Resume[3];
     private int size = 0;
-    int currentIndex;
+    Integer currentIndex;
     private final String error1 = " - ERROR: resume was not found in the database!";
 
     public void clear() {
@@ -19,19 +19,22 @@ public class ArrayStorage {
         size = 0;
     }
 
-    private int findResumeInDatabase(String uuid) {
+    private Integer findResumeInDatabase(String uuid) {
         int i = 0;
         while (i < size && !storage[i].getUuid().equals(uuid)) i++;
+        if (i >= size) {
+            return null;
+        }
         currentIndex = i;
         return currentIndex;
     }
 
-    private boolean resumeIsNotFound (int currentIndex) {
-        return storage[currentIndex] == null;
+    private boolean isResumeNotFound(Integer currentIndex) {
+        return currentIndex == null;
     }
 
     public void update(Resume r) {
-        if (resumeIsNotFound(findResumeInDatabase(r.getUuid()))) {
+        if (isResumeNotFound(findResumeInDatabase(r.getUuid()))) {
             System.out.println("Update resume impossible " + r.getUuid() + error1);
         } else {
             storage[currentIndex] = r;
@@ -44,33 +47,30 @@ public class ArrayStorage {
             System.out.println("Save resume impossible " + r.getUuid() + " - ERROR: the database is full!");
             return;
         }
-        if (!resumeIsNotFound(findResumeInDatabase(r.getUuid()))) {
+        if (!isResumeNotFound(findResumeInDatabase(r.getUuid()))) {
             System.out.println("Save resume impossible " + r.getUuid() + " - ERROR: resume is already in the database!");
-            return;
-        }
-        if (resumeIsNotFound(findResumeInDatabase(r.getUuid()))) {
+        } else {
             storage[size] = r;
             size++;
         }
     }
 
     public Resume get(String uuid) {
-        if (resumeIsNotFound(findResumeInDatabase(uuid))) {
+        if (isResumeNotFound(findResumeInDatabase(uuid))) {
             System.out.println("Get resume impossible " + uuid + error1);
+            return null;
         }
         return storage[currentIndex];
     }
 
     public void delete(String uuid) {
-        System.out.println(uuid);
-        if (resumeIsNotFound(findResumeInDatabase(uuid))) {
+        if (isResumeNotFound(findResumeInDatabase(uuid))) {
             System.out.println("Delete resume impossible " + uuid + error1);
             return;
         }
         storage[currentIndex] = storage[size - 1];
         storage[size - 1] = null;
         size--;
-
     }
 
     /**
