@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10_000;
+    private static final int STORAGE_LIMIT = 10_000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -15,19 +15,20 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
+    public void update(Resume resume) {
+        String uuid = resume.getUuid();
+        int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Update resume impossible " + r.getUuid());
+            System.out.println("Update resume impossible " + uuid);
         } else {
-            storage[index] = r;
-            System.out.println("Resume " + r.getUuid() + " is update!");
+            storage[index] = resume;
+            System.out.println("Resume " + uuid + " is update!");
         }
     }
 
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        String uuid = r.getUuid();
+    public void save(Resume resume) {
+        String uuid = resume.getUuid();
+        int index = getIndex(uuid);
         if (size >= STORAGE_LIMIT) {
             System.out.println("Save resume impossible " + uuid + " - ERROR: the database is full!");
             return;
@@ -35,7 +36,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index > 0) {
             System.out.println("Save resume impossible " + uuid + " - resume is already in the database!");
         } else {
-            insertResume(r, index);
+            insertResume(resume, index);
             size++;
         }
     }
@@ -70,7 +71,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void insertResume(Resume r, int index);
+    protected abstract void insertResume(Resume resume, int index);
 
     protected abstract void fillDeleteResume(int index);
 }
