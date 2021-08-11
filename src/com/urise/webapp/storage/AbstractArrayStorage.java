@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exeption.ExistStorageException;
+import com.urise.webapp.exeption.NotExistStorageException;
+import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -19,7 +22,7 @@ public abstract class AbstractArrayStorage implements Storage {
         String uuid = resume.getUuid();
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Update resume impossible " + uuid);
+            throw new NotExistStorageException(uuid);
         } else {
             storage[index] = resume;
             System.out.println("Resume " + uuid + " is update!");
@@ -29,12 +32,10 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         String uuid = resume.getUuid();
         int index = getIndex(uuid);
-        if (size >= STORAGE_LIMIT) {
-            System.out.println("Save resume impossible " + uuid + " - ERROR: the database is full!");
-            return;
-        }
-        if (index > 0) {
-            System.out.println("Save resume impossible " + uuid + " - resume is already in the database!");
+        if (index >= 0) {
+            throw new ExistStorageException(uuid);
+        } else if (size == STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", uuid);
         } else {
             insertResume(resume, index);
             size++;
@@ -44,8 +45,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Resume " + uuid + " not exist");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -53,8 +53,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Delete resume impossible " + uuid + " not exist");
-            return;
+            throw new NotExistStorageException(uuid);
         }
         fillDeleteResume(index);
         storage[size - 1] = null;
