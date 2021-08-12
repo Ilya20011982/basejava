@@ -1,12 +1,14 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
+import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public abstract class AbstractArrayStorageTest {
     private Storage storage;
@@ -19,6 +21,10 @@ public abstract class AbstractArrayStorageTest {
 
     private static final String UUID_3 = "uuid3";
     public static final Resume RESUME_3 = new Resume(UUID_3);
+
+    private static final String UUID_4 = "uuid4";
+    public static final Resume RESUME_4 = new Resume(UUID_4);
+
 
     protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -42,7 +48,7 @@ public abstract class AbstractArrayStorageTest {
     public void update() {
         Resume resume = new Resume(UUID_1);
         storage.update(resume);
-        assertTrue(resume == storage.get(UUID_1));
+        assertSame(resume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -52,7 +58,26 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void save() {
+        storage.save(RESUME_4);
+        assertSize(4);
+        assertGet(RESUME_4);
+    }
 
+    @Test(expected = ExistStorageException.class)
+    public void saveExist() {
+        storage.save(RESUME_1);
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveOverflow() throws Exception {
+        try {
+            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail();
+        }
+        storage.save(new Resume());
     }
 
     @Test
@@ -81,11 +106,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] arr = storage.getAll();
-        assertEquals(3, arr.length);
-        assertEquals(RESUME_1, arr[0]);
-        assertEquals(RESUME_2, arr[1]);
-        assertEquals(RESUME_3, arr[2]);
+        Resume[] arr = {RESUME_1, RESUME_2, RESUME_3};
+        assertArrayEquals(arr, storage.getAll());
     }
 
     @Test
