@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public abstract class AbstractArrayStorageTest {
-    private Storage storage;
+public abstract class AbstractStorageTest {
+    private final Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1);
@@ -26,7 +26,7 @@ public abstract class AbstractArrayStorageTest {
     public static final Resume RESUME_4 = new Resume(UUID_4);
 
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -89,7 +89,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
-        storage.get("UUID_4");
+        storage.get(UUID_4);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -101,7 +101,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotFound() {
-        storage.delete("uuid23");
+        storage.delete(UUID_4);
     }
 
     @Test
