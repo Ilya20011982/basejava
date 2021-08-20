@@ -7,53 +7,53 @@ import com.urise.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void update(Resume resume) {
-        Object desiredValue = getNotExistDesiredValue(resume.getUuid());
-        doUpdate(resume, desiredValue);
+        Object searchKey = getExistSearchKey(resume.getUuid());
+        doUpdate(resume, searchKey);
     }
 
     public void save(Resume resume) {
-        Object desiredValue = getExistDesiredValue(resume.getUuid());
-        doSave(resume, desiredValue);
+        Object searchKey = getNotExistSearchKey(resume.getUuid());
+        doSave(resume, searchKey);
     }
 
 
     public Resume get(String uuid) {
-        Object desiredValue = getNotExistDesiredValue(uuid);
-        return doGet(desiredValue);
+        Object searchKey = getExistSearchKey(uuid);
+        return doGet(searchKey);
     }
 
     public void delete(String uuid) {
-        Object desiredValue = getNotExistDesiredValue(uuid);
-        doDelete(desiredValue);
+        Object searchKey = getExistSearchKey(uuid);
+        doDelete(searchKey);
     }
 
-    private Object getNotExistDesiredValue(String uuid) {
-        Object desiredValue = getDesiredValue(uuid);
-        if (!isExistStorage(desiredValue)) {
+    private Object getExistSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExistStorage(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return desiredValue;
+        return searchKey;
     }
 
-    private Object getExistDesiredValue(String uuid) {
-        Object desiredValue = getDesiredValue(uuid);
-        if (isExistStorage(desiredValue)) {
+    private Object getNotExistSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExistStorage(searchKey)) {
             throw new ExistStorageException(uuid);
         }
-        return desiredValue;
+        return searchKey;
     }
 
-    protected abstract boolean isExistStorage(Object desiredValue);
+    protected abstract boolean isExistStorage(Object searchKey);
 
-    protected abstract Object getDesiredValue(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
-    protected abstract void doUpdate(Resume resume, Object desiredValue);
+    protected abstract void doUpdate(Resume resume, Object searchKey);
 
-    protected abstract void doSave(Resume resume, Object desiredValue);
+    protected abstract void doSave(Resume resume, Object searchKey);
 
-    protected abstract Resume doGet(Object desiredValue);
+    protected abstract Resume doGet(Object searchKey);
 
-    protected abstract void doDelete(Object desiredValue);
+    protected abstract void doDelete(Object searchKey);
 
 
 }

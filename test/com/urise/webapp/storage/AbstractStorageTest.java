@@ -2,16 +2,14 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
-import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
-    private final Storage storage;
+    protected Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1);
@@ -68,17 +66,7 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
     }
 
-    @Test(expected = StorageException.class)
-    public void saveOverflow() throws Exception {
-        try {
-            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail("переполнение произошло раньше времени");
-        }
-        storage.save(new Resume());
-    }
+
 
     @Test
     public void get() {
