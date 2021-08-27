@@ -4,12 +4,12 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
-    private Map<String, Resume> resumeMap = new TreeMap<>();
+public class MapUUIDStorage extends AbstractStorage {
+    private Map<String, Resume> uuidMap = new TreeMap<>();
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return resumeMap.containsKey(searchKey.toString());
+        return uuidMap.containsKey(searchKey.toString());
     }
 
     @Override
@@ -19,37 +19,36 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume resume, Object searchKey) {
-        resumeMap.put(searchKey.toString(), resume);
+        uuidMap.put(searchKey.toString(), resume);
     }
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        resumeMap.put(resume.getUuid(), resume);
+        uuidMap.put(resume.getUuid(), resume);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return resumeMap.get(searchKey.toString());
+        return uuidMap.get(searchKey.toString());
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        resumeMap.remove(searchKey.toString());
+        uuidMap.remove(searchKey.toString());
     }
 
     @Override
     public void clear() {
-        resumeMap.clear();
+        uuidMap.clear();
     }
 
     @Override
-    public Resume[] getAll() {
-        return resumeMap.values().toArray(new Resume[0]);
-
+    public List<Resume> doAllCopy() {
+        return new ArrayList<>(uuidMap.values());
     }
 
     @Override
     public int size() {
-        return resumeMap.size();
+        return uuidMap.size();
     }
 }

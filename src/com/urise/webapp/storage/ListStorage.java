@@ -34,8 +34,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return list.toArray(new Resume[list.size()]);
+    public List<Resume> doAllCopy() {
+        return new ArrayList<>(list);
     }
 
     @Override
