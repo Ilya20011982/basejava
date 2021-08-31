@@ -18,7 +18,6 @@ public class MainReflection {
 
         Method method = resume.getClass().getMethod("toString");
         System.out.println("invoke resume.toString via reflection - " + method.invoke(resume));
-        // TODO : invoke resume.toString via reflection
         System.out.println(resume);
     }
 }

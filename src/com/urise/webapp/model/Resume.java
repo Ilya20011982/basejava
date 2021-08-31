@@ -36,18 +36,13 @@ public class Resume implements Comparable<Resume> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Resume resume = (Resume) o;
-
-        if (!uuid.equals(resume.uuid)) return false;
-        return fullName.equals(resume.fullName);
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        int result = uuid.hashCode();
-        result = 31 * result + fullName.hashCode();
-        return result;
+        return Objects.hash(uuid, fullName);
     }
 
     @Override
@@ -60,7 +55,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int compareTo(Resume o) {
-        int val = fullName.compareTo(o.fullName);
-        return val != 0 ? val : uuid.compareTo(o.uuid);
+        int compareResult = fullName.compareTo(o.fullName);
+        return compareResult != 0 ? compareResult : uuid.compareTo(o.uuid);
     }
 }

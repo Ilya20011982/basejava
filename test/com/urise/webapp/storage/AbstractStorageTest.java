@@ -26,7 +26,6 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
     public static final Resume RESUME_4 = new Resume(UUID_4, "Name4");
 
-
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
@@ -68,8 +67,6 @@ public abstract class AbstractStorageTest {
     public void saveExist() {
         storage.save(RESUME_1);
     }
-
-
 
     @Test
     public void get() {
