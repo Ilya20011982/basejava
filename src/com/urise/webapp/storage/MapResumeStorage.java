@@ -7,51 +7,51 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MapResumeStorage extends AbstractStorage {
-    private Map<String, Resume> StorageMapResume = new TreeMap<>();
+public class MapResumeStorage extends AbstractStorage<Resume> {
+    private Map<String, Resume> storageMapResume = new TreeMap<>();
 
     @Override
-    protected boolean isExist(Object resume) {
+    protected boolean isExist(Resume resume) {
         return resume != null;
     }
 
     @Override
     protected Resume getSearchKey(String uuid) {
-        return StorageMapResume.get(uuid);
+        return storageMapResume.get(uuid);
     }
 
     @Override
-    protected void doUpdate(Resume r, Object resume) {
-        StorageMapResume.put(r.getUuid(), r);
+    protected void doUpdate(Resume r, Resume resume) {
+        storageMapResume.put(r.getUuid(), r);
     }
 
     @Override
-    protected void doSave(Resume r, Object resume) {
-        StorageMapResume.put(r.getUuid(), r);
+    protected void doSave(Resume r, Resume resume) {
+        storageMapResume.put(r.getUuid(), r);
     }
 
     @Override
-    protected Resume doGet(Object resume) {
-        return (Resume) resume;
+    protected Resume doGet(Resume resume) {
+        return resume;
     }
 
     @Override
-    protected void doDelete(Object resume) {
-        StorageMapResume.remove(((Resume)resume).getUuid());
+    protected void doDelete(Resume resume) {
+        storageMapResume.remove(resume.getUuid());
     }
 
     @Override
     public void clear() {
-        StorageMapResume.clear();
+        storageMapResume.clear();
     }
 
     @Override
     public List<Resume> doAllCopy() {
-        return new ArrayList<>(StorageMapResume.values());
+        return new ArrayList<>(storageMapResume.values());
     }
 
     @Override
     public int size() {
-        return StorageMapResume.size();
+        return storageMapResume.size();
     }
 }
