@@ -1,10 +1,15 @@
 package com.urise.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganizationSection {
+public class OrganizationSection extends AbstractSection{
     private final List<Experience> Experiences;
+
+    public OrganizationSection(Experience... organizations) {
+        this(Arrays.asList(organizations));
+    }
 
     public OrganizationSection(List<Experience> Experiences) {
         Objects.requireNonNull(Experiences, "Experiences must not be null");
