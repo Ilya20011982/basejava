@@ -11,7 +11,9 @@ import org.junit.runners.Suite;
         MapUuidStorageTest.class,
         MapResumeStorageTest.class,
         ObjectPathStorageTest.class,
-        ObjectFileStorageTest.class
+        ObjectFileStorageTest.class,
+        XmlPathStorageTest.class,
+        JsonPathStorageTest.class
 })
 public class AllStorageTest {
 }

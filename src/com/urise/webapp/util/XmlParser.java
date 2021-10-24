@@ -7,7 +7,6 @@ import javax.xml.bind.Unmarshaller;
 import java.io.Reader;
 import java.io.Writer;
 
-
 public class XmlParser {
     private final Marshaller marshaller;
     private final Unmarshaller unmarshaller;
@@ -38,6 +37,7 @@ public class XmlParser {
     public void marshall(Object instance, Writer writer) {
         try {
             marshaller.marshal(instance, writer);
+
         } catch (JAXBException e) {
             throw new IllegalStateException(e);
         }
