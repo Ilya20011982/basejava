@@ -53,6 +53,14 @@ public class Resume implements Comparable<Resume>, Serializable {
         return uuid;
     }
 
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, AbstractSection> getSections() {
+        return sections;
+    }
+
     public String getFullName() {
         return fullName;
     }

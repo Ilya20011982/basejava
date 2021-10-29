@@ -1,8 +1,8 @@
 package com.urise.webapp.util;
-import com.urise.webapp.model.AbstractSection;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.urise.webapp.model.AbstractSection;
 
 import java.io.Reader;
 import java.io.Writer;
