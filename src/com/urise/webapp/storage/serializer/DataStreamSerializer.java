@@ -27,27 +27,19 @@ public class DataStreamSerializer implements StreamSerializer {
                 AbstractSection section = entry.getValue();
                 dos.writeUTF(type.name());
                 switch (type) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        dos.writeUTF(((TextSection) section).getContent());
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        writeCollection(dos, ((ListSection) section).getItems(), dos::writeUTF);
-                        break;
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        writeCollection(dos, ((OrganizationSection) section).getExperiences(), org -> {
-                            dos.writeUTF(org.getHomePage().getName());
-                            dos.writeUTF(org.getHomePage().getUrl());
-                            writeCollection(dos, org.getPositions(), position -> {
-                                writeLocalDate(dos, position.getStartDate());
-                                writeLocalDate(dos, position.getEndDate());
-                                dos.writeUTF(position.getTitle());
-                                dos.writeUTF(position.getDescription());
-                            });
+                    case PERSONAL, OBJECTIVE -> dos.writeUTF(((TextSection) section).getContent());
+                    case ACHIEVEMENT, QUALIFICATIONS -> writeCollection(dos, ((ListSection) section).getItems(), dos::writeUTF);
+                    case EXPERIENCE, EDUCATION -> writeCollection(dos, ((OrganizationSection) section).getExperiences(), org -> {
+                        Link homePage = org.getHomePage();
+                        dos.writeUTF(homePage.getName());
+                        dos.writeUTF(homePage.getUrl());
+                        writeCollection(dos, org.getPositions(), position -> {
+                            writeLocalDate(dos, position.getStartDate());
+                            writeLocalDate(dos, position.getEndDate());
+                            dos.writeUTF(position.getTitle());
+                            dos.writeUTF(position.getDescription());
                         });
-                        break;
+                    });
                 }
             });
         }
@@ -78,25 +70,17 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private AbstractSection readSection(DataInputStream dis, SectionType sectionType) throws IOException {
-        switch (sectionType) {
-            case PERSONAL:
-            case OBJECTIVE:
-                return new TextSection(dis.readUTF());
-            case ACHIEVEMENT:
-            case QUALIFICATIONS:
-                return new ListSection(readList(dis, dis::readUTF));
-            case EXPERIENCE:
-            case EDUCATION:
-                return new OrganizationSection(
-                        readList(dis, () -> new Experience(
-                                new Link(dis.readUTF(), dis.readUTF()),
-                                readList(dis, () -> new Experience.Position(
-                                        readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF()
-                                ))
-                        )));
-            default:
-                throw new IllegalStateException();
-        }
+        return switch (sectionType) {
+            case PERSONAL, OBJECTIVE -> new TextSection(dis.readUTF());
+            case ACHIEVEMENT, QUALIFICATIONS -> new ListSection(readList(dis, dis::readUTF));
+            case EXPERIENCE, EDUCATION -> new OrganizationSection(
+                    readList(dis, () -> new Experience(
+                            new Link(dis.readUTF(), dis.readUTF()),
+                            readList(dis, () -> new Experience.Position(
+                                    readLocalDate(dis), readLocalDate(dis), dis.readUTF(), dis.readUTF()
+                            ))
+                    )));
+        };
     }
 
     private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
