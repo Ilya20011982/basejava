@@ -29,7 +29,7 @@ public class MainStream {
 //        List<Integer> integers = new Random().ints(arrayRandomLength, 1, 100)
 //                .boxed()
 //                .collect(Collectors.toList());
-        List<Integer> integers = new ArrayList<>(Arrays.asList(8, 9));
+        List<Integer> integers = new ArrayList<>(Arrays.asList(1, 8, 9));
         System.out.println(integers);
         System.out.println(oddOrEven(integers));
     }
@@ -44,7 +44,8 @@ public class MainStream {
 
     static List<Integer> oddOrEven(List<Integer> integers) {
         Map<Boolean, List<Integer>> map = integers.stream().collect(partitioningBy(x -> x % 2 == 0));
-        return map.get(map.get(false).size() % 2 == 0);
+        System.out.println(map);
+        return map.get(map.get(false).size() % 2 != 0);
     }
 }
 
