@@ -1,11 +1,10 @@
 package com.urise.webapp;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.*;
 
-public class MainMyStream {
+import static java.util.stream.Collectors.partitioningBy;
+
+public class MainStream {
     public static void main(String[] args) {
 //        реализовать метод через стрим int minValue(int[] values).
 //        Метод принимает массив цифр от 1 до 9, надо выбрать уникальные и вернуть минимально возможное число,
@@ -27,10 +26,10 @@ public class MainMyStream {
 //        все нечетные, если четная - удалить все четные. Сложность алгоритма должна быть O(N). Optional - решение
 //        в один стрим.
 
-        List<Integer> integers = new Random().ints(arrayRandomLength, 1, 100)
-                .boxed()
-                .collect(Collectors.toList());
-
+//        List<Integer> integers = new Random().ints(arrayRandomLength, 1, 100)
+//                .boxed()
+//                .collect(Collectors.toList());
+        List<Integer> integers = new ArrayList<>(Arrays.asList(8, 9));
         System.out.println(integers);
         System.out.println(oddOrEven(integers));
     }
@@ -43,14 +42,9 @@ public class MainMyStream {
                 .reduce(0, (acc, x) -> 10 * acc + x);
     }
 
-    static List<Integer> oddOrEven(List<Integer> integers){
-//        https://quares.ru/?id=817769 ->
-        return integers.stream().collect(Collectors.teeing(
-                Collectors.filtering(i -> i % 2 == 0,
-                        Collectors.toList()),
-                Collectors.filtering(i -> i % 2 == 1,
-                        Collectors.toList()),
-                (even, odd) -> odd.size() % 2 == 1 ? odd : even));
+    static List<Integer> oddOrEven(List<Integer> integers) {
+        Map<Boolean, List<Integer>> map = integers.stream().collect(partitioningBy(x -> x % 2 == 0));
+        return map.get(map.get(false).size() % 2 == 0);
     }
 }
 
