@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 
 public class ResumeTestData {
@@ -8,15 +9,15 @@ public class ResumeTestData {
     public static Resume createResume(String uuid, String fullName) {
         Resume tempResume = new Resume(uuid, fullName);
 
-//        tempResume.addContact(ContactType.MAIL, "mail_" + fullName + "@mail.ru");
-//        tempResume.addContact(ContactType.PHONE, "+7(495)" + uuid);
-//        tempResume.addContact(ContactType.HOME_PHONE, "8(347)" + uuid);
-//        tempResume.addContact(ContactType.SKYPE, "spype_" + fullName);
-//        tempResume.addContact(ContactType.MOBILE, "+7963" + uuid);
-//        tempResume.addContact(ContactType.LINKEDIN, "myLinkedIn_" + fullName);
-//        tempResume.addContact(ContactType.GITHUB, "MyGitHub_" + fullName);
-//        tempResume.addContact(ContactType.STACKOVERFLOW, "MyStackOverflow_" + fullName);
-//        tempResume.addContact(ContactType.HOME_PAGE, "myHomePage_" + fullName + ".org");
+        tempResume.addContact(ContactType.MAIL, "mail_" + fullName + "@mail.ru");
+        tempResume.addContact(ContactType.PHONE, "+7(495)" + uuid);
+        tempResume.addContact(ContactType.HOME_PHONE, "8(347)" + uuid);
+        tempResume.addContact(ContactType.SKYPE, "spype_" + fullName);
+        tempResume.addContact(ContactType.MOBILE, "+7963" + uuid);
+        tempResume.addContact(ContactType.LINKEDIN, "myLinkedIn_" + fullName);
+        tempResume.addContact(ContactType.GITHUB, "MyGitHub_" + fullName);
+        tempResume.addContact(ContactType.STACKOVERFLOW, "MyStackOverflow_" + fullName);
+        tempResume.addContact(ContactType.HOME_PAGE, "myHomePage_" + fullName + ".org");
 //
 //        tempResume.addSection(SectionType.OBJECTIVE, new TextSection("Objective_" + uuid));
 //        tempResume.addSection(SectionType.PERSONAL, new TextSection("Personal_" + fullName));
