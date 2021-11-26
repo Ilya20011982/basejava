@@ -1,7 +1,6 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 
 public class ResumeTestData {
 
@@ -18,11 +17,11 @@ public class ResumeTestData {
         tempResume.addContact(ContactType.GITHUB, "MyGitHub_" + fullName);
         tempResume.addContact(ContactType.STACKOVERFLOW, "MyStackOverflow_" + fullName);
         tempResume.addContact(ContactType.HOME_PAGE, "myHomePage_" + fullName + ".org");
-//
-//        tempResume.addSection(SectionType.OBJECTIVE, new TextSection("Objective_" + uuid));
-//        tempResume.addSection(SectionType.PERSONAL, new TextSection("Personal_" + fullName));
-//        tempResume.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment_1", "Achivment_2", "Achivment_3"));
-//        tempResume.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "Python3"));
+
+        tempResume.addSection(SectionType.OBJECTIVE, new TextSection("Objective_" + uuid));
+        tempResume.addSection(SectionType.PERSONAL, new TextSection("Personal_" + fullName));
+        tempResume.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment_1", "Achivment_2", "Achivment_3"));
+        tempResume.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "Python3"));
 //        tempResume.addSection(SectionType.EXPERIENCE,
 //                new OrganizationSection(
 //                        new Experience("Experience_" + fullName, "http://Experience_" + uuid + ".ru",
