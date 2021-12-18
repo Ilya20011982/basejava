@@ -35,7 +35,7 @@
             <h2><a>${type.title}</a></h2>
             <c:choose>
                 <c:when test="${type=='OBJECTIVE'}">
-                    <input type='text' name='${type}' size=75 value='<%=section%>'>
+                    <input type='text' name='${type}' size=75 value="<%=section%>">
                 </c:when>
                 <c:when test="${type=='PERSONAL'}">
                     <textarea name='${type}' cols=75 rows=5><%=section%></textarea>
@@ -48,13 +48,12 @@
                     <c:forEach var="org" items="<%=((OrganizationSection) section).getExperiences()%>"
                                varStatus="counter">
                         <dl>
-                            <dt>Название учереждения:</dt>
+                            <dt>Название учреждения:</dt>
                             <dd><input type="text" name='${type}' size=100 value="${org.homePage.name}"></dd>
                         </dl>
                         <dl>
-                            <dt>Сайт учереждения:</dt>
+                            <dt>Сайт учреждения:</dt>
                             <dd><input type="text" name='${type}url' size=100 value="${org.homePage.url}"></dd>
-                            </dd>
                         </dl>
                         <br>
                         <div style="margin-left: 30px">
