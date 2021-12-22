@@ -34,7 +34,6 @@ public class ResumeServlet extends HttpServlet {
             return;
         }
         Resume r;
-        r = null;
         switch (action) {
             case "delete" -> {
                 storage.delete(uuid);
@@ -101,17 +100,17 @@ public class ResumeServlet extends HttpServlet {
         final boolean isCreate = (uuid == null || uuid.length() == 0);
         Resume r;
         if (isCreate) {
-            r = new Resume(fullName);
+            r = new Resume(fullName.trim());
         } else {
             r = storage.get(uuid);
-            r.setFullName(fullName);
+            r.setFullName(fullName.trim());
         }
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (HtmlUtil.isEmpty(value)) {
                 r.getContacts().remove(type);
             } else {
-                r.setContact(type, value);
+                r.setContact(type, value.trim());
             }
         }
         for (SectionType type : SectionType.values()) {
@@ -121,8 +120,8 @@ public class ResumeServlet extends HttpServlet {
                 r.getSections().remove(type);
             } else {
                 switch (type) {
-                    case OBJECTIVE, PERSONAL -> r.setSection(type, new TextSection(value));
-                    case ACHIEVEMENT, QUALIFICATIONS -> r.setSection(type, new ListSection(value.split("\\n")));
+                    case OBJECTIVE, PERSONAL -> r.setSection(type, new TextSection(value.replaceAll("\\s+ | \\n*", " ").trim()));
+                    case ACHIEVEMENT, QUALIFICATIONS -> r.setSection(type, new ListSection(value.trim().replaceAll("\\s+\\n+\\s+", "\n").split("\\n")));
                     case EDUCATION, EXPERIENCE -> {
                         List<Experience> orgs = new ArrayList<>();
                         String[] urls = request.getParameterValues(type.name() + "url");
@@ -148,10 +147,14 @@ public class ResumeServlet extends HttpServlet {
                 }
             }
         }
-        if (isCreate) {
-            storage.save(r);
+        if (fullName.trim().isEmpty()) {
+            request.setAttribute("resumes", storage.getAllSorted());
         } else {
-            storage.update(r);
+            if (isCreate) {
+                storage.save(r);
+            } else {
+                storage.update(r);
+            }
         }
         response.sendRedirect("resume");
     }
