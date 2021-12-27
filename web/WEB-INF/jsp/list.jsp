@@ -10,20 +10,22 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <a href="resume?action=add"><img src="img/add.png"><label>Add resume</label></a>
-    <br>
-    <table border="1" cellpadding="8" cellspacing="0" style="margin: auto">
+    <table>
+        <div><a class="add" href="resume?action=add"><img src="img/add.png"><label>Add resume</label></a></div>
         <tr>
             <th>Имя</th>
             <th>E-Mail</th>
-            <th></th>
-            <th></th>
+            <th>Remove</th>
+            <th>Edit</th>
         </tr>
         <c:forEach items="${resumes}" var="resume">
             <jsp:useBean id="resume" type="com.urise.webapp.model.Resume"/>
             <tr>
                 <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
-                <td><%=ContactType.MAIL.toHtml(resume.getContact(ContactType.MAIL))%>
+                <td><%=ContactType.MAIL.toHtml(resume.getContact(ContactType.MAIL))%><br>
+                    <%=ContactType.PHONE.toHtml(resume.getContact(ContactType.PHONE))%><br>
+                    <%=ContactType.HOME_PHONE.toHtml(resume.getContact(ContactType.HOME_PHONE))%><br>
+                    <%=ContactType.MOBILE.toHtml(resume.getContact(ContactType.MOBILE))%>
                 </td>
                 <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png"></a></td>
                 <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></td>
